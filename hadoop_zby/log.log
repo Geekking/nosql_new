@@ -1,0 +1,14 @@
+/usr/lib/python2.7/site-packages/pkg_resources.py:1054: UserWarning: /home/hadoop/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+  warnings.warn(msg, UserWarning)
+Traceback (most recent call last):
+  File "/home/hadoop/hadoop_nfs/spark-1.5.2-bin-hadoop2.6/codes/hadoop_zby/./wet_test.py", line 42, in <module>
+    top_word = total_words.takeOrdered(num_words, key = lambda v: -v[1])
+  File "/home/hadoop/hadoop_nfs/spark-1.5.2-bin-hadoop2.6/python/lib/pyspark.zip/pyspark/rdd.py", line 1249, in takeOrdered
+  File "/home/hadoop/hadoop_nfs/spark-1.5.2-bin-hadoop2.6/python/lib/pyspark.zip/pyspark/rdd.py", line 799, in reduce
+  File "/home/hadoop/hadoop_nfs/spark-1.5.2-bin-hadoop2.6/python/lib/pyspark.zip/pyspark/rdd.py", line 773, in collect
+  File "/home/hadoop/hadoop_nfs/spark-1.5.2-bin-hadoop2.6/python/lib/py4j-0.8.2.1-src.zip/py4j/java_gateway.py", line 536, in __call__
+  File "/home/hadoop/hadoop_nfs/spark-1.5.2-bin-hadoop2.6/python/lib/py4j-0.8.2.1-src.zip/py4j/java_gateway.py", line 364, in send_command
+  File "/home/hadoop/hadoop_nfs/spark-1.5.2-bin-hadoop2.6/python/lib/py4j-0.8.2.1-src.zip/py4j/java_gateway.py", line 473, in send_command
+  File "/usr/lib64/python2.7/socket.py", line 430, in readline
+    data = recv(1)
+KeyboardInterrupt
