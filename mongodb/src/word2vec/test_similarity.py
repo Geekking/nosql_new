@@ -3,7 +3,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 from gensim.models import Word2Vec
 from db_util import db, word2vec_path
-
+import math
 ## load all doc_vector into memory
 class MyDocVector(object):
 	def __iter__(self):
@@ -24,7 +24,7 @@ def cal_sim(record1, record2):
 		a_norm += record1['vector'][i] * record1['vector'][i]
 		b_norm += record2['vector'][i] * record2['vector'][i]
 	if a_norm > 0 and b_norm > 0:
-		return doc_sum /(a_norm * b_norm)
+		return doc_sum /(math.sqrt(a_norm) * math.sqrt(b_norm))
 	else:
 		return  -111111
 
@@ -35,7 +35,7 @@ def top_k_sim(candidate_set, search_record, top_k = 10):
 	result_ind = sorted(result_ind, key = lambda a:-a[1])
 	result = []
 	for j in range(top_k):
-		result.append(candidate_set[result_ind[j][0]])
+		result.append([candidate_set[result_ind[j][0]],result_ind[j][1]])
 
 	return result
 result_file = open('result_test.txt','w')
@@ -47,14 +47,17 @@ for keyword in key_words:
 	if len(search_result) > 0:	
 		result_file.write('aim\n')
 		for doc in search_result:
-			sstr = str(doc['title']).decode('utf-8','ignore').encode('utf-8') + ',' + ','.join([str(float_val) for float_val in doc['vector']])
+			sstr = str(doc['title']).decode('utf-8','ignore').encode('utf-8') + '\n' + ','.join([str(float_val) for float_val in doc['vector']])
 			result_file.write(sstr + '\n')	
+		
+		for search_doc in search_result:
+			if len(search_doc['vector']) < 10 :
+				continue	
+			similar_docs = top_k_sim(title_vecs, search_doc)
+			result_file.write('sim\n')	
+			for doc in similar_docs:
+				sstr = str(doc[0]['title']).decode('utf-8','ignore').encode('utf-8') + ' , ' + str(doc[1])
 
-		similar_docs = top_k_sim(title_vecs, search_result[0])
-		result_file.write('sim\n')	
-		for doc in similar_docs:
-			sstr = str(doc['title']).decode('utf-8','ignore').encode('utf-8') + ',' + ','.join([str(float_val) for float_val in doc['vector']])
-
-			result_file.write(sstr + '\n')	
-
+				result_file.write(sstr + '\n')	
+		print '\n\n'
 ## changing title to a vector
